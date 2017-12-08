@@ -1,0 +1,20 @@
+{
+    "name": "vlae/DocumentDifferenceFinder",
+    "type": "project",
+    "authors": [
+        {
+            "name": "vlae",
+            "email": "valeriy.tomov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7",
+        "needim/noty": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "DocDiff\\": "DocDiff"
+        }
+    }
+}
