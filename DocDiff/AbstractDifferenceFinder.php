@@ -19,13 +19,11 @@ abstract class AbstractDifferenceFinder
     /** @var bool $hasDifference **/
     protected $hasDifference = false;
 
-    abstract public function __construct(string $file1 , string $file2);
+    abstract public function __construct(string $file1 , string $file2, string $outputFilePath);
 
     abstract protected function validateFiles();
 
-    abstract protected function findDifference();
-
-    abstract protected function outputDifference(int $outputMethod);
+    abstract protected function outputDifference();
 
     abstract protected function setOutputFilePath(string $outputFile);
 

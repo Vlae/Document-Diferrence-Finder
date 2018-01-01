@@ -23,14 +23,20 @@ class DifferenceFinder extends AbstractDifferenceFinder
     /** @var string $outputFile - path to output file */
     protected $outputFile;
 
+    /** @var int $outputType */
+    protected $outputType = self::ECHO_OUTPUT;
+
     /** @var bool $hasDifference **/
     protected $hasDifference = false;
 
-    public function __construct(string $file1 , string $file2) {
-        $this->file1 = $file1;
-        $this->file2 = $file2;
-
+    public function __construct(string $file1 , string $file2, string $outputFilePath = '') {
         $this->validateFiles();
+        $this->parseDifference();
+
+        $this->setFilesPath($file1, $file2);
+        $this->setOutputFilePath($outputFilePath);
+
+        $this->outputDifference();
     }
 
     protected function validateFiles() {
@@ -44,28 +50,40 @@ class DifferenceFinder extends AbstractDifferenceFinder
         }
     }
 
-    protected function findDifference() {
-
-    }
-
     /** Executes diff command and generates output*/
     private function parseDifference() {
         $diffCommand = 'diff ' .$this->file1. ' ' . $this->file2 . ' --speed-large-files -b';
         exec($diffCommand, $output, $returnValue);
 
-        //TODO:: check output values
+        /** TODO:: check output values
+         * Probably I should create temp file to contain differences OR try to use Heredoc
+         */
     }
 
-    protected function outputDifference(int $outputMethod) {
-
+    protected function outputDifference() {
+        if ($this->outputType === self::ECHO_OUTPUT) {
+            $this->echoDifference();
+        } elseif ($this->outputType === self::FILE_OUTPUT) {
+            $this->writeDifferenceIntoFile();
+        }
     }
 
     protected function setOutputFilePath(string $outputFile) {
-        $this->outputFile = $outputFile;
+        if ($outputFile !== '') {
+            $this->outputType = self::FILE_OUTPUT;
+            $this->outputFile = $outputFile;
+        }
     }
 
-    protected function writeDifferenceIntoFile() {
+    protected function setFilesPath(string $file1, string $file2) {
+        $this->file1 = $file1;
+        $this->file2 = $file2;
+    }
 
+
+
+    protected function writeDifferenceIntoFile() {
+        // TODO:: creation of file;
     }
 
     /** Outputs difference data into browser */
@@ -76,8 +94,4 @@ class DifferenceFinder extends AbstractDifferenceFinder
     protected function generateFileName() {
 
     }
-
-
-
-
 }
